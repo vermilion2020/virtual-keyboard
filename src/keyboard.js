@@ -190,7 +190,7 @@ ${textarea.value.substring(end)}`;
           } else if (target.dataset.code === 'KeyV') {
             this.addLetter(this.clipboard);
           }
-        } else if (!this.functionalBtns.includes(target.dataset.code)) {
+        } else if (!this.functionalBtns.includes(target.dataset.code) && !this.capsLockOn) {
           newLetter = letter[this.lang];
         }
         if (target.dataset.code === 'Backspace' || target.dataset.code === 'Delete') {
