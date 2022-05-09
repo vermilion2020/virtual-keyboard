@@ -3,6 +3,8 @@ export default class Keyboard {
 
   capsLockOn = false;
 
+  shiftOn = false;
+
   selectionEnd = 0;
 
   clipboard = '';
@@ -168,6 +170,18 @@ ${textarea.value.substring(end)}`;
           this.capsLockOn = !this.capsLockOn;
         }
 
+        if (target.dataset.code === 'ShiftLeft') {
+          this.shiftOn = !this.shiftOn;
+        }
+
+        if (target.dataset.code === 'AltLeft' && this.shiftOn) {
+          this.lang = this.lang === 'en' ? 'ru' : 'en';
+          localStorage.setItem('lang', this.lang);
+          const savedText = document.querySelector('textarea').value;
+          this.shiftOn = false;
+          setTimeout(() => { this.createKeyboard(savedText); }, 700);
+        }
+
         event.target.classList.add('transition-key-down');
 
         const letter = this.getLetter(target.dataset.code);
@@ -176,7 +190,7 @@ ${textarea.value.substring(end)}`;
           newLetter = target.dataset.value.toUpperCase();
         }
 
-        if ((this.pressedBtns.includes('ShiftLeft') || this.pressedBtns.includes('ShiftRight')) && !this.functionalBtns.includes(target.dataset.code)) {
+        if ((this.shiftOn || this.pressedBtns.includes('ShiftRight')) && !this.functionalBtns.includes(target.dataset.code)) {
           if (letter[`${this.lang}_sup`]) {
             newLetter = letter[`${this.lang}_sup`];
           } else {
@@ -216,12 +230,22 @@ ${textarea.value.substring(end)}`;
           } else {
             event.target.classList.remove('caps_active');
           }
-        } else if (event.target.dataset.code !== 'CapsLock') {
+        } else if (event.target.dataset.code === 'ShiftLeft') {
+          if (this.shiftOn) {
+            event.target.classList.add('caps_active');
+          } else {
+            event.target.classList.remove('caps_active');
+          }
+        } else if (event.target.dataset.code !== 'CapsLock' && event.target.dataset.code !== 'ShiftLeft') {
           if (this.pressedBtns.includes(event.target.dataset.code)) {
             event.target.classList.add('active');
           } else {
             event.target.classList.remove('active');
           }
+        }
+        if (event.target.dataset.code !== 'ShiftLeft') {
+          this.shiftOn = false;
+          document.querySelector('[data-code=ShiftLeft]').classList.remove('caps_active');
         }
       }
     });
