@@ -18,9 +18,8 @@ document.addEventListener('keydown', (event) => {
     return;
   }
   event.preventDefault();
-  const textarea = document.querySelector('textarea');
   const newLetter = keyboard.getNewLetter(event.code);
-  textarea.value += newLetter;
+  keyboard.addLetter(newLetter);
   if (!keyboard.pressedBtns.includes(event.code)) {
     keyboard.pressedBtns.push(event.code);
     document.querySelector(`[data-code=${event.code}]`).classList.add('transition-key-down');

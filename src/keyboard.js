@@ -3,15 +3,13 @@ export default class Keyboard {
 
   capsLockOn = false;
 
+  selectionEnd = 0;
+
   functionalBtns = ['Backspace', 'Tab', 'Delete', 'CapsLock', 'Enter', 'ShiftLeft', 'ShiftRight', 'ControlLeft', 'MetaLeft', 'AltLeft', 'AltRight', 'ControlRight'];
 
   constructor(buttons, lang) {
     this.buttons = buttons;
     this.lang = lang;
-  }
-
-  getLetter(code) {
-    return this.buttons.flat().filter((lt) => lt.code === code)[0];
   }
 
   createButton(i, row) {
@@ -45,6 +43,10 @@ export default class Keyboard {
     return row;
   }
 
+  getLetter(code) {
+    return this.buttons.flat().filter((lt) => lt.code === code)[0];
+  }
+
   getNewLetter(code) {
     const letter = this.getLetter(code);
     if (this.functionalBtns.includes(code)) {
@@ -62,17 +64,32 @@ export default class Keyboard {
     return letter[this.lang];
   }
 
+  addLetter(newLetter) {
+    if (newLetter === '') {
+      return;
+    }
+    const textarea = document.querySelector('textarea');
+    // start and end position of selection (will be the same if no selection)
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const newText = textarea.value.substring(0, start) + newLetter + textarea.value.substring(end);
+    textarea.value = newText;
+    textarea.focus();
+    // add cursor to its previous place or at the end
+    textarea.selectionEnd = start === end ? end + 1 : end;
+    this.selectionEnd = textarea.selectionEnd;
+  }
+
   createKeyboard(defaultText = '') {
     const BODY = document.querySelector('body');
     BODY.innerHTML = '';
     const LABEL = document.createElement('div');
     LABEL.classList.add('info_label');
-    LABEL.innerText = this.lang === 'en' ? 'The shortcut for changing language is Shift + Alt' : 'Комбинация для смены раскладки клавиатуры Shift + Alt';
+    LABEL.innerText = this.lang === 'en' ? 'The shortcut for changing language is Left Shift + Left Alt' : 'Комбинация для смены раскладки клавиатуры - Left Shift + Left Alt';
     const INPUT_CONTAINER = document.createElement('div');
     INPUT_CONTAINER.classList.add('text_container');
     const TEXT_INPUT = document.createElement('textarea');
     TEXT_INPUT.value = defaultText;
-    TEXT_INPUT.focus();
     INPUT_CONTAINER.appendChild(TEXT_INPUT);
     const CONTAINER = document.createElement('div');
     CONTAINER.classList.add('container');
@@ -83,6 +100,8 @@ export default class Keyboard {
     BODY.appendChild(LABEL);
     BODY.appendChild(INPUT_CONTAINER);
     BODY.appendChild(CONTAINER);
+    TEXT_INPUT.focus();
+    TEXT_INPUT.selectionEnd = this.selectionEnd;
 
     CONTAINER.addEventListener('click', (event) => {
       let { target } = event;
@@ -97,7 +116,6 @@ export default class Keyboard {
 
         event.target.classList.add('transition-key-down');
 
-        const textarea = document.querySelector('textarea');
         const letter = this.getLetter(target.dataset.code);
         let newLetter = '';
         if (this.capsLockOn && !this.functionalBtns.includes(target.dataset.code)) {
@@ -113,8 +131,7 @@ export default class Keyboard {
           newLetter = letter[this.lang];
         }
 
-        textarea.value += newLetter;
-        textarea.focus();
+        this.addLetter(newLetter);
       }
     });
 
