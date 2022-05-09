@@ -33,7 +33,16 @@ document.addEventListener('keydown', (event) => {
     keyboard.lang = keyboard.lang === 'en' ? 'ru' : 'en';
     localStorage.setItem('lang', keyboard.lang);
     const savedText = document.querySelector('textarea').value;
-    keyboard.createKeyboard(savedText);
+    setTimeout(() => { keyboard.createKeyboard(savedText); }, 700);
+  }
+  if (event.code === 'Backspace' || event.code === 'Delete') {
+    keyboard.deleteLetter(event.code);
+  }
+  if (event.code === 'Tab') {
+    keyboard.addLetter('    ');
+  }
+  if (event.code === 'Enter') {
+    keyboard.addLineBreak();
   }
 });
 

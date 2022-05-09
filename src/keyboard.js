@@ -76,7 +76,42 @@ export default class Keyboard {
     textarea.value = newText;
     textarea.focus();
     // add cursor to its previous place or at the end
-    textarea.selectionEnd = start === end ? end + 1 : end;
+    textarea.selectionEnd = start + newLetter.length;
+    this.selectionEnd = textarea.selectionEnd;
+  }
+
+  addLineBreak() {
+    const textarea = document.querySelector('textarea');
+    // start and end position of selection (will be the same if no selection)
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const newText = `${textarea.value.substring(0, start)}
+${textarea.value.substring(end)}`;
+    textarea.value = newText;
+    textarea.focus();
+    // add cursor to its previous place or at the end
+    textarea.selectionEnd = start + 1;
+    this.selectionEnd = textarea.selectionEnd;
+  }
+
+  deleteLetter(key) {
+    if (!key) {
+      return;
+    }
+    const textarea = document.querySelector('textarea');
+    // start and end position of selection (will be the same if no selection)
+    let start = textarea.selectionStart;
+    let end = textarea.selectionEnd;
+    if (start === end && key === 'Backspace') {
+      start = start > 0 ? start - 1 : start;
+    } else if (start === end && key === 'Delete') {
+      end = end < textarea.value.length - 1 ? end + 1 : end;
+    }
+    const newText = textarea.value.substring(0, start) + textarea.value.substring(end);
+    textarea.value = newText;
+    textarea.focus();
+    // add cursor to its previous place or at the end
+    textarea.selectionEnd = start;
     this.selectionEnd = textarea.selectionEnd;
   }
 
@@ -129,6 +164,15 @@ export default class Keyboard {
           newLetter = letter[this.lang].toUpperCase();
         } else if (!this.functionalBtns.includes(target.dataset.code)) {
           newLetter = letter[this.lang];
+        }
+        if (target.dataset.code === 'Backspace' || target.dataset.code === 'Delete') {
+          this.deleteLetter(target.dataset.code);
+        }
+        if (target.dataset.code === 'Tab') {
+          newLetter = '    ';
+        }
+        if (target.dataset.code === 'Enter') {
+          this.addLineBreak();
         }
 
         this.addLetter(newLetter);

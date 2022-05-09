@@ -162,7 +162,7 @@ const BUTTONS = [
       code: 'BracketLeft',
     },
     {
-      ru: 'Ъ',
+      ru: 'ъ',
       en: ']',
       code: 'BracketRight',
     },
