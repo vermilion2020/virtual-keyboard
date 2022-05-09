@@ -5,6 +5,8 @@ export default class Keyboard {
 
   selectionEnd = 0;
 
+  clipboard = '';
+
   functionalBtns = ['Backspace', 'Tab', 'Delete', 'CapsLock', 'Enter', 'ShiftLeft', 'ShiftRight', 'ControlLeft', 'MetaLeft', 'AltLeft', 'AltRight', 'ControlRight'];
 
   constructor(buttons, lang) {
@@ -115,6 +117,23 @@ ${textarea.value.substring(end)}`;
     this.selectionEnd = textarea.selectionEnd;
   }
 
+  selectAll() {
+    const textarea = document.querySelector('textarea');
+    // start and end position of selection (will be the same if no selection)
+    textarea.focus();
+    textarea.selectionStart = 0;
+    textarea.selectionEnd = textarea.value.length;
+    this.selectionEnd = textarea.selectionEnd;
+  }
+
+  copy() {
+    const textarea = document.querySelector('textarea');
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    this.clipboard = textarea.value.substring(start, end);
+    navigator.clipboard.writeText(this.clipboard);
+  }
+
   createKeyboard(defaultText = '') {
     const BODY = document.querySelector('body');
     BODY.innerHTML = '';
@@ -145,7 +164,7 @@ ${textarea.value.substring(end)}`;
           target = event.path['1'];
         }
 
-        if (event.code === 'CapsLock') {
+        if (target.dataset.code === 'CapsLock') {
           this.capsLockOn = !this.capsLockOn;
         }
 
@@ -160,8 +179,17 @@ ${textarea.value.substring(end)}`;
         if ((this.pressedBtns.includes('ShiftLeft') || this.pressedBtns.includes('ShiftRight')) && !this.functionalBtns.includes(target.dataset.code)) {
           if (letter[`${this.lang}_sup`]) {
             newLetter = letter[`${this.lang}_sup`];
+          } else {
+            newLetter = letter[this.lang].toUpperCase();
           }
-          newLetter = letter[this.lang].toUpperCase();
+        } else if (this.pressedBtns.includes('ControlLeft') || this.pressedBtns.includes('ControlRight')) {
+          if (target.dataset.code === 'KeyA') {
+            this.selectAll();
+          } else if (target.dataset.code === 'KeyC') {
+            this.copy();
+          } else if (target.dataset.code === 'KeyV') {
+            this.addLetter(this.clipboard);
+          }
         } else if (!this.functionalBtns.includes(target.dataset.code)) {
           newLetter = letter[this.lang];
         }

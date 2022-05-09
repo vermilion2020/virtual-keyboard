@@ -18,8 +18,20 @@ document.addEventListener('keydown', (event) => {
     return;
   }
   event.preventDefault();
-  const newLetter = keyboard.getNewLetter(event.code);
-  keyboard.addLetter(newLetter);
+
+  if (keyboard.pressedBtns.includes('ControlLeft') || keyboard.pressedBtns.includes('ControlRight')) {
+    if (event.code === 'KeyA') {
+      keyboard.selectAll();
+    } else if (event.code === 'KeyC') {
+      keyboard.copy();
+    } else if (event.code === 'KeyV') {
+      keyboard.addLetter(keyboard.clipboard);
+    }
+  } else {
+    const newLetter = keyboard.getNewLetter(event.code);
+    keyboard.addLetter(newLetter);
+  }
+
   if (!keyboard.pressedBtns.includes(event.code)) {
     keyboard.pressedBtns.push(event.code);
     document.querySelector(`[data-code=${event.code}]`).classList.add('transition-key-down');
