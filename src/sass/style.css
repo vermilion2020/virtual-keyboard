@@ -1,0 +1,72 @@
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 7px;
+  width: 1200px;
+}
+
+.key {
+  text-align: center;
+  justify-content: center;
+  font-family: Arial;
+  font-weight: normal;
+  padding: 15px;
+  width: 40px;
+  color: rgb(53, 14, 8);
+  background-color: rgb(252, 198, 153);
+  border: 1px solid rgb(240, 131, 42);
+  border-radius: 3px;
+  margin-bottom: 5px;
+}
+.key sup {
+  font-weight: 500;
+  font-size: 12px;
+  margin-right: 5px;
+}
+.key:hover {
+  border: 1px solid rgb(151, 41, 26);
+  box-shadow: 0px 2px 35px 14px rgba(13, 13, 13, 0.04);
+  color: rgb(151, 41, 26);
+  cursor: pointer;
+}
+.key.active {
+  background-color: rgb(148, 132, 241);
+  border: 1px solid rgb(53, 14, 8);
+}
+
+.large_btn {
+  width: 90px;
+  background-color: rgb(252, 198, 153);
+}
+
+.medium_btn {
+  width: 60px;
+  background-color: rgb(252, 198, 153);
+}
+
+.space_btn {
+  width: 400px;
+  background-color: rgb(252, 198, 153);
+}
+
+.container {
+  width: 1200px;
+  margin: auto;
+}
+
+.text_container {
+  width: 1200px;
+  margin: 20px auto 10px;
+}
+
+.text_container textarea {
+  height: 200px;
+  width: 1195px;
+  background: #FFF;
+  border-radius: 10px;
+  color: rgb(53, 14, 8);
+  border: 2px solid rgb(240, 131, 42);
+  font-size: 20px;
+}
+
+/*# sourceMappingURL=style.css.map */

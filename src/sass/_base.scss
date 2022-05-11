@@ -1,0 +1,44 @@
+$text-color: rgb(53, 14, 8);
+$active-text-color: rgb(151, 41, 26);
+$btn-bg-color: rgb(252, 198, 153);
+$border-color: rgb(240, 131, 42);
+$btn-active-bg: rgb(171, 158, 241);
+
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 7px;
+  width: 1200px;
+}
+
+.container {
+  width: 1200px;
+  margin: auto;
+}
+
+.info_label {
+  width: 1200px;
+  margin: 10px auto 10px; 
+  color: $text-color;
+  text-align: center;
+  font-size: 20px;
+}
+
+.text_container {
+  width: 1200px;
+  margin: 20px auto 10px; 
+}
+
+.text_container textarea { 
+  height: 200px;
+  width: 1195px;
+  background: #FFF;
+  border-radius: 10px;
+  color: $text-color;
+  border: 2px solid $border-color;
+  font-size: 20px;
+}
