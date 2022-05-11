@@ -31,8 +31,13 @@ export default class Keyboard {
       sup.innerText = button[`${this.lang}_sup`];
       buttonDiv.appendChild(sup);
     }
+    if (button.code.indexOf('Key') !== -1) {
+      const sup = document.createElement('sup');
+      sup.innerText = button[this.lang].toUpperCase();
+      buttonDiv.appendChild(sup);
+    }
     const buttonName = button[this.lang].length > 1
-      ? button[this.lang] : button[this.lang].toUpperCase();
+      ? button[this.lang] : button[this.lang];
     buttonDiv.append(buttonName);
     return buttonDiv;
   }
@@ -62,7 +67,7 @@ export default class Keyboard {
       }
       return letter[this.lang].toUpperCase();
     }
-    if (this.capsLockOn && !this.functionalBtns.includes(code)) {
+    if ((this.capsLockOn || this.shiftOn) && !this.functionalBtns.includes(code)) {
       return letter[this.lang].toUpperCase();
     }
     return letter[this.lang];
@@ -109,7 +114,7 @@ ${textarea.value.substring(end)}`;
     if (start === end && key === 'Backspace') {
       start = start > 0 ? start - 1 : start;
     } else if (start === end && key === 'Delete') {
-      end = end < textarea.value.length - 1 ? end + 1 : end;
+      end = end < textarea.value.length ? end + 1 : end;
     }
     const newText = textarea.value.substring(0, start) + textarea.value.substring(end);
     textarea.value = newText;
@@ -142,6 +147,9 @@ ${textarea.value.substring(end)}`;
     const LABEL = document.createElement('div');
     LABEL.classList.add('info_label');
     LABEL.innerText = this.lang === 'en' ? 'The shortcut for changing language is Left Shift + Left Alt' : 'Комбинация для смены раскладки клавиатуры - Left Shift + Left Alt';
+    const PR_LINK = document.createElement('div');
+    PR_LINK.classList.add('info_label');
+    PR_LINK.innerHTML = '<a href="https://github.com/vermilion2020/virtual-keyboard/pull/1" target="_blank">Pull request link</a>';
     const INPUT_CONTAINER = document.createElement('div');
     INPUT_CONTAINER.classList.add('text_container');
     const TEXT_INPUT = document.createElement('textarea');
@@ -153,6 +161,7 @@ ${textarea.value.substring(end)}`;
     for (let i = 0; i < this.buttons.length; i += 1) {
       CONTAINER.appendChild(this.createRow(i));
     }
+    BODY.appendChild(PR_LINK);
     BODY.appendChild(LABEL);
     BODY.appendChild(INPUT_CONTAINER);
     BODY.appendChild(CONTAINER);
@@ -190,7 +199,7 @@ ${textarea.value.substring(end)}`;
           newLetter = target.dataset.value.toUpperCase();
         }
 
-        if ((this.shiftOn || this.pressedBtns.includes('ShiftRight')) && !this.functionalBtns.includes(target.dataset.code)) {
+        if ((this.shiftOn || this.pressedBtns.includes('ShiftRight') || this.pressedBtns.includes('ShiftLeft')) && !this.functionalBtns.includes(target.dataset.code)) {
           if (letter[`${this.lang}_sup`]) {
             newLetter = letter[`${this.lang}_sup`];
           } else {
@@ -231,6 +240,10 @@ ${textarea.value.substring(end)}`;
             event.target.classList.remove('caps_active');
           }
         } else if (event.target.dataset.code === 'ShiftLeft') {
+          if (this.pressedBtns.includes('ShiftLeft')) {
+            this.shiftOn = true;
+            event.target.classList.add('caps_active');
+          }
           if (this.shiftOn) {
             event.target.classList.add('caps_active');
           } else {

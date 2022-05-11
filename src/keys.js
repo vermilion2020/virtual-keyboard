@@ -2,7 +2,7 @@ const BUTTONS = [
   [{
     ru: 'ё',
     en: '`',
-    ru_sup: '',
+    ru_sup: 'Ё',
     en_sup: '~',
     code: 'Backquote',
   },
@@ -159,11 +159,15 @@ const BUTTONS = [
     {
       ru: 'х',
       en: '[',
+      ru_sup: 'Х',
+      en_sup: '{',
       code: 'BracketLeft',
     },
     {
       ru: 'ъ',
       en: ']',
+      ru_sup: 'Ъ',
+      en_sup: '}',
       code: 'BracketRight',
     },
     {
@@ -234,11 +238,15 @@ const BUTTONS = [
   {
     ru: 'ж',
     en: ';',
+    ru_sup: 'Ж',
+    en_sup: ':',
     code: 'Semicolon',
   },
   {
     ru: 'э',
     en: '\'',
+    ru_sup: 'Э',
+    en_sup: '"',
     code: 'Quote',
   },
   {
@@ -252,14 +260,6 @@ const BUTTONS = [
     ru: 'Shift',
     en: 'Shift',
     code: 'ShiftLeft',
-    class: 'large_btn',
-  },
-  {
-    ru: '\\',
-    en: '\\',
-    ru_sup: '/',
-    en_sup: '|',
-    code: 'Backslash',
   },
   {
     ru: 'я',
@@ -299,14 +299,14 @@ const BUTTONS = [
   {
     ru: 'б',
     en: ',',
-    ru_sup: '',
+    ru_sup: 'Б',
     en_sup: '<',
     code: 'Comma',
   },
   {
     ru: 'ю',
     en: '.',
-    ru_sup: '',
+    ru_sup: 'Ю',
     en_sup: '>',
     code: 'Period',
   },
@@ -326,6 +326,7 @@ const BUTTONS = [
     ru: 'Shift',
     en: 'Shift',
     code: 'ShiftRight',
+    class: 'shift_right_btn',
   },
   ],
   [
@@ -360,12 +361,6 @@ const BUTTONS = [
       code: 'AltRight',
     },
     {
-      ru: 'Ctrl',
-      en: 'Ctrl',
-      class: 'medium_btn',
-      code: 'ControlRight',
-    },
-    {
       ru: '←',
       en: '←',
       code: 'ArrowLeft',
@@ -379,6 +374,11 @@ const BUTTONS = [
       ru: '→',
       en: '→',
       code: 'ArrowRight',
+    },
+    {
+      ru: 'Ctrl',
+      en: 'Ctrl',
+      code: 'ControlRight',
     },
   ],
 ];

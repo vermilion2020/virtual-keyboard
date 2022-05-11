@@ -69,6 +69,11 @@
   border: 1px solid rgb(53, 14, 8);
 }
 
+.shift_right_btn {
+  width: 118px;
+  background-color: rgb(252, 198, 153);
+}
+
 .large_btn {
   width: 90px;
   background-color: rgb(252, 198, 153);
